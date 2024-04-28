@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  deploy:
+    docker:
+      - image: cimg/base:current-22.04
+    steps:
+      - checkout
+      - run:
+          name: Deploy laravel app over SSH from circle ci runner
+          command: ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'bash /home/ubuntu/laravel-circleci-app.sh'
+
+workflows:
+  version: 2
+  circle_ci_test:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
